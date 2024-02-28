@@ -32,7 +32,7 @@ const StickyItem: React.ForwardRefRenderFunction<
 
 
   return (
-    <section ref={ref} style={{height:'100vh'}}>
+    <section ref={ref}>
       <div ref={myRef}>
         {React.Children.map(children, (child: any, index) => {
           return React.cloneElement(child, {

@@ -1,22 +1,29 @@
-import React, { ReactNode } from "react";
-import { ExecuteAnimateFunc } from "./types/index";
+import React, { ReactNode } from 'react';
+import { getHeight } from './utils/utils';
+import { ExecuteAnimateFunc } from './types/index';
 
-
-interface StickyItemProps{
-  height?:number
-  id:number
-  animate:ExecuteAnimateFunc
-  children?:ReactNode|null
+interface StickyItemProps {
+  height?: number | string;
+  id: number;
+  animate: ExecuteAnimateFunc;
+  children?: ReactNode | null;
 }
 
-const StickyItem:React.ForwardRefRenderFunction<HTMLDivElement,StickyItemProps> = (props,ref)=>{
-  const { height=500,children } = props
-  return <div ref={ref} style={{height:height+'px'}}>
-    {children}
-  </div> 
-}
+const StickyItem: React.ForwardRefRenderFunction<
+  HTMLDivElement,
+  StickyItemProps
+> = (props, ref) => {
+  const { height = '200vh', children } = props;
 
-const RefStickyItem = React.forwardRef(StickyItem)
+  const h = getHeight(height);
 
-export default RefStickyItem
+  return (
+    <div ref={ref} style={{ height: h, position: 'sticky', top: 0 }}>
+      {children}
+    </div>
+  );
+};
 
+const RefStickyItem = React.forwardRef(StickyItem);
+
+export default RefStickyItem;
