@@ -1,28 +1,27 @@
-import { ExecuteAnimateFunc, CollectData } from '../types/index';
+import type { CollectData } from '../types/index';
 import { uuid } from './utils';
 
 /**
  *
- * @param nodes 子节点数组
- * @param root 根节点
- * @returns 自节点位置信息
+ * @param data CollectData
  */
 export function countAnimateMomentInfo(data: CollectData) {
   const collects = new Map();
-  for (const node of data.sections) {
-    collects.set(uuid(), blockAnimateStart(node, data));
-  }
+  data.sections.forEach((node,index)=>{
+    collects.set(uuid(), {
+      ...blockAnimateStart(node, data),
+      callback:data.vnodes[index]?.props?.animate||[]
+    });
+  })
+
   data.animateMomentInfo = collects;
 
-  console.log('animateMomentInfo: ',data.animateMomentInfo);
+  console.log('animateMomentInfo: ',data);
   
   window.onscroll = (e) => {
     let top = document.documentElement.scrollTop;
     activateAnimate(
       countScrollRatio(top, data),
-      (key, ratio) => {
-        console.log(key, ratio);
-      },
       data
     );
   };
@@ -62,13 +61,12 @@ export function countScrollRatio(scrollTop: number, data: CollectData) {
  */
 export function activateAnimate(
   rate: number,
-  executeAnimate: ExecuteAnimateFunc,
   data: CollectData
 ) {
   for (let key of data.animateMomentInfo!.keys()) {
-    let { begin, end } = data.animateMomentInfo!.get(key)!;
+    let { begin, end, callback } = data.animateMomentInfo!.get(key)!;
     if (rate > begin && rate < end) {
-      executeAnimate(key, Number(((rate - begin) / (end - begin)).toFixed(3)));
+      callback(key, Number(((rate - begin) / (end - begin)).toFixed(3)));
     }
   }
 }

@@ -6,10 +6,16 @@ function App() {
   return (
     <>
       <StickyScroll>
-        <StickyItem animate={()=>{}}>
+        <StickyItem animate={(key,value)=>{
+          console.log('第一个',key,value);
+          
+        }}>
           <div>第一页</div>
         </StickyItem>
-        <StickyItem animate={()=>{}}>
+        <StickyItem animate={(key,value)=>{
+          console.log('第二个',key,value);
+          
+        }}>
           <div>第二页</div>
         </StickyItem>
       </StickyScroll>

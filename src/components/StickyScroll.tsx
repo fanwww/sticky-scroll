@@ -2,7 +2,7 @@ import React, { useRef, useEffect, createElement, ReactNode } from 'react';
 import { countAnimateMomentInfo } from './utils/core';
 
 interface StickyItemProps {
-  children?: ReactNode | null;
+  children?: Array<ReactNode>;
 }
 
 const StickyItem: React.ForwardRefRenderFunction<
@@ -16,6 +16,7 @@ const StickyItem: React.ForwardRefRenderFunction<
   useEffect(() => {
     // 在 useEffect 中访问子节点的真实 DOM 元素
     const data = {
+      vnodes:children!,
       sections: Array.from(childRefs.current),
       root:document.body,
       ids: null,
@@ -32,7 +33,7 @@ const StickyItem: React.ForwardRefRenderFunction<
 
 
   return (
-    <section ref={ref}>
+    <section ref={ref} style={{height:'100vh'}}>
       <div ref={myRef}>
         {React.Children.map(children, (child: any, index) => {
           return React.cloneElement(child, {

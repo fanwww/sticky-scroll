@@ -4,7 +4,6 @@ import { ExecuteAnimateFunc } from './types/index';
 
 interface StickyItemProps {
   height?: number | string;
-  id: number;
   animate: ExecuteAnimateFunc;
   children?: ReactNode | null;
 }
