@@ -1,16 +1,18 @@
-import { useState } from 'react'
 import StickyScroll from "./components/StickyScroll";
-import stickyItem from "./components/stickyItem";
+import StickyItem from "./components/StickyItem";
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <div>
-        123
-      </div>
+      <StickyScroll>
+        <StickyItem animate={()=>{}}>
+          <div>第一页</div>
+        </StickyItem>
+        <StickyItem animate={()=>{}}>
+          <div>第二页</div>
+        </StickyItem>
+      </StickyScroll>
     </>
   )
 }

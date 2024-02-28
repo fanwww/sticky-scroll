@@ -1,9 +1,12 @@
 import React, { ReactNode } from "react";
+import { ExecuteAnimateFunc } from "./types/index";
 
 
 interface StickyItemProps{
-  height:number
-  children:ReactNode|null
+  height?:number
+  id:number
+  animate:ExecuteAnimateFunc
+  children?:ReactNode|null
 }
 
 const StickyItem:React.ForwardRefRenderFunction<HTMLDivElement,StickyItemProps> = (props,ref)=>{
