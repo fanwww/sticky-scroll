@@ -2,28 +2,24 @@ import type { CollectData } from '../types/index';
 import { uuid } from './utils';
 
 /**
- *
  * @param data CollectData
  */
 export function countAnimateMomentInfo(data: CollectData) {
   const collects = new Map();
-  data.sections.forEach((node,index)=>{
+  data.sections.forEach((node, index) => {
     collects.set(uuid(), {
       ...blockAnimateStart(node, data),
-      callback:data.vnodes[index]?.props?.animate||[]
+      callback: data.vnodes[index]?.props?.animate || [],
     });
-  })
+  });
 
   data.animateMomentInfo = collects;
 
-  console.log('animateMomentInfo: ',data);
-  
+  console.log('animateMomentInfo: ', data);
+
   window.onscroll = (e) => {
     let top = document.documentElement.scrollTop;
-    activateAnimate(
-      countScrollRatio(top, data),
-      data
-    );
+    activateAnimate(countScrollRatio(top, data), data);
   };
 }
 
@@ -34,8 +30,14 @@ export function countAnimateMomentInfo(data: CollectData) {
  * @returns {{end: number, begin: number}} 开始滚动比例，结束滚动比例
  */
 export function blockAnimateStart(node: HTMLElement, data: CollectData) {
-  let begin = countScrollRatio(node.offsetTop, data); // 节点头部距离页面顶部距离，占页面比例，例如xx节点头部在页面20%高度位置
-  let end = countScrollRatio(node.offsetTop + node.clientHeight, data); // 节点底部距离页面顶部距离
+  let begin = countScrollRatio(
+    Math.max(node.offsetTop - window.innerHeight, 0),
+    data
+  ); // 节点头部距离页面顶部距离，占页面比例，例如xx节点头部在页面20%高度位置
+  let end = countScrollRatio(
+    Math.max(node.offsetTop + node.clientHeight - window.innerHeight, 0),
+    data
+  ); // 节点底部距离页面顶部距离
   return { begin, end };
 }
 
@@ -59,10 +61,7 @@ export function countScrollRatio(scrollTop: number, data: CollectData) {
  * @param rate 当前滚动进度
  * @param executeAnimate:执行方法
  */
-export function activateAnimate(
-  rate: number,
-  data: CollectData
-) {
+export function activateAnimate(rate: number, data: CollectData) {
   for (let key of data.animateMomentInfo!.keys()) {
     let { begin, end, callback } = data.animateMomentInfo!.get(key)!;
     if (rate > begin && rate < end) {

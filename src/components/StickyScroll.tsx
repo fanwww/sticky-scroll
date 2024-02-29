@@ -1,8 +1,8 @@
-import React, { useRef, useEffect, createElement, ReactNode } from 'react';
+import React, { useRef, useEffect, ReactElement } from 'react';
 import { countAnimateMomentInfo } from './utils/core';
 
 interface StickyItemProps {
-  children?: Array<ReactNode>;
+  children?: Array<ReactElement>;
 }
 
 const StickyItem: React.ForwardRefRenderFunction<

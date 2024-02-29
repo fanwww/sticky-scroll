@@ -7,7 +7,7 @@ import React, { ReactNode, ForwardedRef, ReactNode } from 'react';
 export type ExecuteAnimateFunc = (id: string | number, rate: number) => void;
 
 export interface CollectData {
-  vnodes: Array<ReactNode>;
+  vnodes: Array<ReactElement>;
   sections: Array<HTMLElement>;
   root: HTMLElement;
   animateMomentInfo: Map<
