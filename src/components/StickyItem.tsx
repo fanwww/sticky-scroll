@@ -17,7 +17,7 @@ const StickyItem: React.ForwardRefRenderFunction<
   const h = getHeight(height);
 
   return (
-    <div ref={ref} style={{ height: h, position: 'sticky', top: 0 }}>
+    <div ref={ref} style={{ height: h, top: 0 }}>
       {children}
     </div>
   );

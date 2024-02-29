@@ -12,14 +12,17 @@ export function countAnimateMomentInfo(data: CollectData) {
       callback: data.vnodes[index]?.props?.animate || [],
     });
   });
+  // 计算起点终点结束后在设置sticky样式
+  setTimeout(()=>{
+    data.sections.forEach(node=>{
+      node.style.position = 'sticky'
+    })
+  })
 
   data.animateMomentInfo = collects;
-
-  console.log('animateMomentInfo: ', data);
-
   window.onscroll = (e) => {
     let top = document.documentElement.scrollTop;
-    activateAnimate(countScrollRatio(top, data), data);
+    activateAnimate(countScrollRatio(top,data.root), data);
   };
 }
 
@@ -30,13 +33,15 @@ export function countAnimateMomentInfo(data: CollectData) {
  * @returns {{end: number, begin: number}} 开始滚动比例，结束滚动比例
  */
 export function blockAnimateStart(node: HTMLElement, data: CollectData) {
+  console.log('node:',node.offsetTop);
+  
   let begin = countScrollRatio(
     Math.max(node.offsetTop - window.innerHeight, 0),
-    data
+    data.root
   ); // 节点头部距离页面顶部距离，占页面比例，例如xx节点头部在页面20%高度位置
   let end = countScrollRatio(
     Math.max(node.offsetTop + node.clientHeight - window.innerHeight, 0),
-    data
+    data.root
   ); // 节点底部距离页面顶部距离
   return { begin, end };
 }
@@ -47,11 +52,11 @@ export function blockAnimateStart(node: HTMLElement, data: CollectData) {
  * @param root 根节点
  * @returns {number} 滚动进度0.0000-1.0000
  */
-export function countScrollRatio(scrollTop: number, data: CollectData) {
+export function countScrollRatio(scrollTop: number, root: any) {
   return Number(
     (
-      (100 * scrollTop) /
-      (data?.root?.scrollHeight - data?.root?.clientHeight)
+      scrollTop /
+      root?.clientHeight
     ).toFixed(4)
   );
 }
@@ -62,6 +67,7 @@ export function countScrollRatio(scrollTop: number, data: CollectData) {
  * @param executeAnimate:执行方法
  */
 export function activateAnimate(rate: number, data: CollectData) {
+  if(rate>1) return
   for (let key of data.animateMomentInfo!.keys()) {
     let { begin, end, callback } = data.animateMomentInfo!.get(key)!;
     if (rate > begin && rate < end) {

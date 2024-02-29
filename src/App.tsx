@@ -19,6 +19,9 @@ function App() {
           <div>第二页</div>
         </StickyItem>
       </StickyScroll>
+      <div style={{height:'200vh'}}>
+        视差滚动之外
+      </div>
     </>
   )
 }
